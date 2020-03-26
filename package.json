@@ -19,6 +19,7 @@
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/jest": "^25.1.4",
+    "@types/js-yaml": "^3.12.3",
     "@types/node": "^13.9.2",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
@@ -46,5 +47,8 @@
     "*.{js,ts,tsx,json,md,css}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "js-yaml": "^3.13.1"
   }
 }
