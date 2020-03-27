@@ -1,0 +1,7 @@
+{
+  "name": "fake-package",
+  "example": {
+    "type": "package.json"
+  },
+  "private": true
+}

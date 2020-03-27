@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`globalConfigFile function loads a .config.js file 1`] = `
+Object {
+  "type": "config.js",
+}
+`;
+
+exports[`globalConfigFile function loads a .js file 1`] = `
+Object {
+  "type": "js",
+}
+`;
+
+exports[`globalConfigFile function loads a .json file 1`] = `
+Object {
+  "type": "json",
+}
+`;
+
+exports[`globalConfigFile function loads a .yaml file 1`] = `
+Object {
+  "type": "yaml",
+}
+`;
+
+exports[`globalConfigFile function loads a .yml file 1`] = `
+Object {
+  "type": "yml",
+}
+`;
+
+exports[`globalConfigFile function loads an extension-free file 1`] = `
+Object {
+  "type": "raw, json",
+}
+`;
+
+exports[`globalConfigFile function loads the package.json 1`] = `
+Object {
+  "type": "package.json",
+}
+`;
+
+exports[`globalConfigFile function throws an error if all falsy extensions are passed to options 1`] = `"No extensions were found or enabled"`;
+
+exports[`globalConfigFile function throws an error if no files are found 1`] = `"No configuration file found"`;
