@@ -50,6 +50,7 @@
     ]
   },
   "dependencies": {
+    "glob-promise": "^3.4.0",
     "js-yaml": "^3.13.1"
   }
 }
