@@ -20,7 +20,7 @@ The file provided must be the one with **no extension**.
 ```javascript
 import globalConfigFile from "global-config-file";
 
-const config = globalConfigFile(".examplerc");
+const config = globalConfigFile("example");
 ```
 
 ### Error handling
@@ -38,7 +38,7 @@ import globalConfigFile from "global-config-file";
 let config;
 
 try {
-  config = globalConfigFile(".examplerc");
+  config = globalConfigFile("example");
 } catch (error) {
   console.error(error);
 }
@@ -50,7 +50,7 @@ Otherwise, if `quite` is on `true`, it will just return `undefined`.
 
 The function will look for all the possible files, in the order given in the options.
 
-So, for the `.examplerc` name, it will look for:
+So, for the `example` name, it will look for:
 
 - `.examplerc` _(JSON and YML format are supported)_
 - `.examplerc.js`
