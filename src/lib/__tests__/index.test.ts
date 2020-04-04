@@ -12,7 +12,7 @@ const deactivatedExtensions = Object.keys(defaultExtensions).reduce(
 
 describe("globalConfigFile function", () => {
   it("loads a .json file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, json: true },
       root
     });
@@ -20,7 +20,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads a .yml file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, yml: true },
       root
     });
@@ -28,7 +28,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads a .yaml file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, yaml: true },
       root
     });
@@ -36,7 +36,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads an extension-free file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, empty: true },
       root
     });
@@ -44,7 +44,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads a .js file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, js: true },
       root
     });
@@ -52,7 +52,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads a .config.js file", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, "config.js": true },
       root
     });
@@ -60,7 +60,7 @@ describe("globalConfigFile function", () => {
     expect(config).toMatchSnapshot();
   });
   it("loads the package.json", () => {
-    const config = globalConfigFile(".examplerc", {
+    const config = globalConfigFile("example", {
       extensions: { ...deactivatedExtensions, package: true },
       root
     });
@@ -80,7 +80,7 @@ describe("globalConfigFile function", () => {
     expect(globalConfigFileTest).toThrowErrorMatchingSnapshot();
   });
   it("throws an error if all falsy extensions are passed to options", () => {
-    const globalConfigFileTest = globalConfigFile.bind(null, ".examplerc", {
+    const globalConfigFileTest = globalConfigFile.bind(null, "example", {
       extensions: deactivatedExtensions,
       root
     });
@@ -101,7 +101,7 @@ describe("globalConfigFile function", () => {
     expect(globalConfigFileTest).not.toThrow();
   });
   it("does not throw an error if all falsy extensions are passed to options when quiet=true", () => {
-    const globalConfigFileTest = globalConfigFile.bind(null, ".examplerc", {
+    const globalConfigFileTest = globalConfigFile.bind(null, "example", {
       extensions: deactivatedExtensions,
       root,
       quiet: true

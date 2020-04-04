@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
+import glob from "glob-promise";
 
 export const defaultExtensions = {
   empty: true,
@@ -30,49 +31,40 @@ type Options = {
 const stripExtra = (name: string): string =>
   name.replace(/^\./, "").replace(/rc$/, "");
 
-const getFilename = (name: string, extension: Extension): string => {
-  if (extension === "package") {
-    return "package.json";
-  }
-
-  if (extension === "empty") {
-    return `${name}`;
-  }
-
-  if (extension === "config.js") {
-    return `${stripExtra(name)}.${extension}`;
-  }
-
-  return `${name}.${extension}`;
-};
-
 const findConfigurationFile = (
   name: string,
   extensions: Extensions,
   root: string
-): string =>
-  Object.entries(extensions).reduce(
-    (filename, [extension, active]: [Extension, boolean]) => {
-      if (filename) {
-        return filename;
+): string => {
+  const extensionGlob = Object.entries(extensions).reduce(
+    (carry, [extension, isActive]: [Extension, boolean]) => {
+      if (!isActive) {
+        return carry;
       }
 
-      if (!active) {
-        return filename;
+      if (extension === "package") {
+        return carry;
       }
 
-      const completeFilename = getFilename(name, extension);
-
-      // NOTE: It's necessary to join root here because of the package.json
-      // scenario.
-      if (fs.existsSync(path.join(root, completeFilename))) {
-        return completeFilename;
-      }
-
-      return "";
+      return carry.concat("," + extension);
     },
     ""
   );
+
+  const foundConfig = glob
+    .sync(
+      root +
+        `/?(.)${stripExtra(name)}?(rc)${
+          extensions.empty ? "?" : "+"
+        }(.{${extensionGlob}})`,
+      {
+        dot: true
+      }
+    )
+    .concat(extensions.package ? path.join(root, "package.json") : undefined);
+
+  return foundConfig[0];
+};
 
 const getObjectFromConfigFile = (filename: string): object => {
   const pathToFile = path.join(process.cwd(), filename);
@@ -87,13 +79,12 @@ const getObjectFromConfigFile = (filename: string): object => {
 const checkExtensions = (extensions: Extensions): boolean =>
   Object.values(extensions).some(Boolean);
 
-const globalConfigFile = (name: string, options?: Options): object => {
-  const extensions = Object.assign(
-    {},
-    defaultExtensions,
-    (options || {}).extensions
-  );
-  const errors = Object.assign({}, defaultErrors, (options || {}).errors);
+const globalConfigFile = (
+  name: string,
+  options: Options | undefined = {}
+): object => {
+  const extensions = Object.assign({}, defaultExtensions, options.extensions);
+  const errors = Object.assign({}, defaultErrors, options.errors);
   const root = options.root || process.cwd();
 
   if (!checkExtensions(extensions)) {
@@ -114,9 +105,9 @@ const globalConfigFile = (name: string, options?: Options): object => {
     throw new Error(errors.noConfigFound);
   }
 
-  const config = getObjectFromConfigFile(path.join(root, foundFile));
+  const config = getObjectFromConfigFile(foundFile);
 
-  if (foundFile === "package.json") {
+  if (foundFile === path.join(root, "package.json")) {
     return config[stripExtra(name)];
   }
 
